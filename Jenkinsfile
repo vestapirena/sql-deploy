@@ -3,9 +3,10 @@ pipeline {
 
     environment {
         MYSQL_USER = 'root'
-        MYSQL_PASS = 'root' // Cambia si es necesario
+        MYSQL_PASS = 'root' 
         MYSQL_DB_DEV = 'sql_deploy_dev'
-        MYSQL_DB_UAT = 'sql_deploy_dev' // Para simplificar usaremos la misma base en este ejemplo
+        MYSQL_DB_UAT = 'sql_deploy_dev' 
+        MYSQL_CLIENT = '"C:/Program Files/MariaDB 11.5/bin/mysql.exe"'
     }
 
     parameters {
@@ -21,9 +22,9 @@ pipeline {
 
                     sse.each { file ->
                         sh """
-                        mysql -u ${MYSQL_USER} -p${MYSQL_PASS} ${MYSQL_DB_DEV} < ${file.trim()}
+                        ${MYSQL_CLIENT} -u ${MYSQL_USER} -p${MYSQL_PASS} ${MYSQL_DB_DEV} < ${file.trim()}
                         """
-                    }
+                    """
                 }
             }
         }
