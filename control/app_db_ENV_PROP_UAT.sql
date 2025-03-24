@@ -1,0 +1,1 @@
+SOURCE sql/install_UAT.sql;
