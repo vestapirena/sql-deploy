@@ -3,9 +3,8 @@ pipeline {
 
     environment {
         MYSQL_USER = 'root'
-        MYSQL_PASS = 'root' 
+        MYSQL_PASS = 'root'
         MYSQL_DB_DEV = 'sql_deploy_dev'
-        MYSQL_DB_UAT = 'sql_deploy_dev' 
         MYSQL_CLIENT = '"C:/Program Files/MariaDB 11.5/bin/mysql.exe"'
     }
 
@@ -24,7 +23,7 @@ pipeline {
                         sh """
                         ${MYSQL_CLIENT} -u ${MYSQL_USER} -p${MYSQL_PASS} ${MYSQL_DB_DEV} < ${file.trim()}
                         """
-                    """
+                    }
                 }
             }
         }
