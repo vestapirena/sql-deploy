@@ -4,8 +4,9 @@ pipeline {
     environment {
         MYSQL_USER = 'root'
         MYSQL_PASS = 'root'
-        MYSQL_DB_DEV = 'sql_deploy_dev'
         MYSQL_CLIENT = '"C:/Program Files/MariaDB 11.5/bin/mysql.exe"'
+        MYSQL_DB_DEV = 'sql_deploy_dev'
+        MYSQL_DB_UAT = 'sql_deploy_uat'
     }
 
     parameters {
@@ -20,8 +21,13 @@ pipeline {
                     def sse = readFile(sseFile).split("\n")
 
                     sse.each { file ->
+                        file = file.trim()
+                        if (!file) return // skip empty lines
+
+                        def db = file.contains("UAT") ? MYSQL_DB_UAT : MYSQL_DB_DEV
+
                         sh """
-                        ${MYSQL_CLIENT} -u ${MYSQL_USER} -p${MYSQL_PASS} ${MYSQL_DB_DEV} < ${file.trim()}
+                        ${MYSQL_CLIENT} -u ${MYSQL_USER} -p${MYSQL_PASS} ${db} < ${file}
                         """
                     }
                 }
